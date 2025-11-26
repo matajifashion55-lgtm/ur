@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mataji Fashion | Celebrate Your Culture in Style</title>
+    
+    <!-- Google Fonts: Playfair Display (Luxury) & Poppins (Modern) -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & RESET --- */
+        :root {
+            --primary-color: #800020; /* Royal Burgundy/Maroon */
+            --secondary-color: #1a1a1a;
+            --gold: #D4AF37;
+            --gold-gradient: linear-gradient(45deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
+            --light-cream: #f9f7f2;
+            --text-dark: #333;
+            --text-light: #fff;
+            --shadow: 0 10px 30px rgba(0,0,0,0.1);
+            --transition: all 0.4s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light-cream);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- BACKGROUND ANIMATION & TEXTURE --- */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+            /* Subtle Ethnic Pattern Overlay */
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(212, 175, 55, 0.05) 1px, transparent 1px),
+                url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDQwIDQwIiBmaWxsLX9wYWNpdHk9IjAuMDUiPjxwYXRoIGQ9Ik0wIDIwaDIwdjIwSDB6IiBmaWxsPSIjODAwMDIwIi8+PC9zdmc+');
+        }
+
+        /* --- NAVIGATION --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i { color: var(--gold); }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            position: relative;
+            color: var(--secondary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .mobile-toggle { display: none; font-size: 1.5rem; cursor: pointer; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        /* Hero Slideshow Background */
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            background-size: cover;
+            background-position: center;
+            transition: transform 10s ease, opacity 1s ease;
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(128, 0, 32, 0.85), rgba(0, 0, 0, 0.7));
+            z-index: -1;
+        }
+
+        .hero-content {
+            z-index: 2;
+            padding: 0 20px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 1.2s ease forwards 0.5s;
+        }
+
+        .hero-logo-large {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            background: var(--gold-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .tagline {
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            border: 2px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--gold-gradient);
+            color: var(--secondary-color);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gold);
+            color: var(--gold);
+        }
+
+        .btn-outline:hover {
+            background: var(--gold);
+            color: var(--secondary-color);
+        }
+
+        /* --- SECTION STYLES --- */
+        section {
+            padding: 80px 10%;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-header h2::after {
+            content: '';
+            display: block;
+            width: 60%;
+            height: 3px;
+            background: var(--gold);
+            margin: 10px auto 0;
+        }
+
+        .section-header p {
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- ABOUT SECTION --- */
+        .about-container {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            flex-wrap: wrap;
+        }
+
+        .about-img {
+            flex: 1;
+            min-width: 300px;
+            position: relative;
+        }
+
+        .about-img img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--gold);
+        }
+
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--secondary-color);
+        }
+
+        .about-text p {
+            line-height: 1.8;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* --- CATEGORIES --- */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .cat-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            position: relative;
+            cursor: pointer;
+            group: hover;
+        }
+
+        .cat-img {
+            height: 350px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .cat-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .cat-card:hover .cat-img img {
+            transform: scale(1.1);
+        }
+
+        .cat-info {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 20px;
+            text-align: center;
+        }
+
+        .cat-info h3 {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .cat-info p {
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        /* --- WHY CHOOSE US --- */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .feature-item {
+            padding: 30px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-10px);
+            border-bottom: 3px solid var(--gold);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .feature-item h4 { margin-bottom: 10px; }
+
+        /* --- GALLERY --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .gallery-item {
+            height: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            filter: brightness(0.7);
+            transform: scale(1.05);
+        }
+
+        /* --- REVIEWS --- */
+        .reviews-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 30px;
+            padding-bottom: 30px;
+            scroll-snap-type: x mandatory;
+        }
+
+        .review-card {
+            min-width: 300px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            border-left: 5px solid var(--gold);
+            scroll-snap-align: center;
+        }
+
+        .stars { color: var(--gold); margin-bottom: 15px; }
+
+        /* --- CONTACT --- */
+        .contact-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            background: #fff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-info, .contact-form {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .info-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--light-cream);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-color);
+            font-size: 1.2rem;
+            border: 1px solid var(--gold);
+        }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: inherit;
+        }
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background: var(--secondary-color);
+            color: #fff;
+            padding: 50px 10% 20px;
+            text-align: center;
+        }
+
+        .footer-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--gold);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            margin: 20px 0;
+        }
+
+        .social-links a {
+            color: #fff;
+            font-size: 1.5rem;
+            margin: 0 10px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover { color: var(--gold); }
+
+        .copyright {
+            margin-top: 30px;
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: absolute;
+                top: 70px;
+                right: -100%;
+                width: 100%;
+                background: #fff;
+                flex-direction: column;
+                align-items: center;
+                padding: 40px 0;
+                transition: 0.5s;
+                box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+            }
+            .nav-links.active { right: 0; }
+            .mobile-toggle { display: block; color: var(--primary-color); }
+            
+            .hero-logo-large { font-size: 2.5rem; }
+            .section-header h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Particle Background Canvas -->
+    <canvas id="bg-canvas"></canvas>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">
+            <i class="fas fa-crown"></i> Mataji Fashion
+        </div>
+        <div class="mobile-toggle" onclick="toggleMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#collections">Collections</a></li>
+            <li><a href="#why-us">Why Us</a></li>
+            <li><a href="#reviews">Reviews</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <!-- Slideshow Backgrounds (Placeholders) -->
+        <div class="hero-bg" style="background-image: url('https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1920&auto=format&fit=crop');"></div>
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-logo-large">Mataji Fashion</h1>
+            <p class="tagline">“Celebrate Your Culture in Style”</p>
+            <div class="btn-group">
+                <a href="#collections" class="btn btn-primary">Shop Now</a>
+                <a href="https://wa.me/919008291647" class="btn btn-outline"><i class="fab fa-whatsapp"></i> WhatsApp Us</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="section-header reveal">
+            <h2>Our Story</h2>
+            <p>Weaving tradition with modern elegance.</p>
+        </div>
+        <div class="about-container">
+            <div class="about-img reveal">
+                <!-- Placeholder for ethnic store/clothing image -->
+                <img src="https://images.unsplash.com/photo-1565551322230-f9a8888746b8?q=80&w=800&auto=format&fit=crop" alt="Indian Ethnic Wear">
+            </div>
+            <div class="about-text reveal">
+                <h3>Heritage Meets Modernity</h3>
+                <p>Welcome to <strong>Mataji Fashion</strong>, where we honor the timeless beauty of Indian ethnic wear. Located in the heart of Chickpet, Bangalore, we bring you an exclusive range of Kurtis, Kurties, and sets that blend traditional craftsmanship with contemporary designs.</p>
+                <p>We believe every woman deserves to look royal without compromising on comfort. Our fabrics are handpicked, and our designs are curated to celebrate festivals, weddings, and everyday elegance.</p>
+                <a href="#contact" class="btn btn-primary" style="display:inline-block; margin-top:20px;">Visit Our Store</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Collections -->
+    <section id="collections" style="background-color: #fff;">
+        <div class="section-header reveal">
+            <h2>Our Collections</h2>
+            <p>Explore our premium range of ethnic attire.</p>
+        </div>
+        
+        <div class="categories-grid reveal">
+            <!-- Category 1 -->
+            <div class="cat-card">
+                <div class="cat-img">
+                    <img src="https://images.unsplash.com/photo-1596783437088-08a38c2965ca?q=80&w=600&auto=format&fit=crop" alt="Designer Kurtis">
+                </div>
+                <div class="cat-info">
+                    <h3>Designer Kurtis</h3>
+                    <p>Chic, stylish, and perfect for any occasion.</p>
+                </div>
+            </div>
+
+            <!-- Category 2 -->
+            <div class="cat-card">
+                <div class="cat-img">
+                    <img src="https://images.unsplash.com/photo-1629814366629-b695e1e0a294?q=80&w=600&auto=format&fit=crop" alt="Kurties & Tunics">
+                </div>
+                <div class="cat-info">
+                    <h3>Kurties</h3>
+                    <p>Short, trendy styles for the modern woman.</p>
+                </div>
+            </div>
+
+            <!-- Category 3 -->
+            <div class="cat-card">
+                <div class="cat-img">
+                    <img src="https://images.unsplash.com/photo-1583391733958-c77579f972b9?q=80&w=600&auto=format&fit=crop" alt="Festive Sets">
+                </div>
+                <div class="cat-info">
+                    <h3>Festive Sets</h3>
+                    <p>Complete ethnic looks with dupattas and bottoms.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us -->
+    <section id="why-us">
+        <div class="section-header reveal">
+            <h2>Why Choose Us</h2>
+            <p>Experience the Mataji Fashion difference.</p>
+        </div>
+        <div class="features-grid reveal">
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-feather-alt"></i></div>
+                <h4>Premium Fabrics</h4>
+                <p>Soft, breathable, and high-quality materials.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-palette"></i></div>
+                <h4>Latest Designs</h4>
+                <p>Trending styles updated every season.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-rupee-sign"></i></div>
+                <h4>Affordable Luxury</h4>
+                <p>Premium fashion at wholesale prices.</p>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                <h4>Trusted Brand</h4>
+                <p>Loved by thousands of happy customers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery / Lookbook -->
+    <section id="gallery" style="background-color: #fff;">
+        <div class="section-header reveal">
+            <h2>Lookbook</h2>
+        </div>
+        <div class="gallery-grid reveal">
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1585994270059-4d6951253a6a?q=80&w=600" alt="Look 1"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1631248055158-edec7a3c072b?q=80&w=600" alt="Look 2"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1605364850024-d007c5a6697b?q=80&w=600" alt="Look 3"></div>
+            <div class="gallery-item"><img src="https://images.unsplash.com/photo-1594916888605-8798d1a12d1b?q=80&w=600" alt="Look 4"></div>
+        </div>
+    </section>
+
+    <!-- Customer Reviews -->
+    <section id="reviews">
+        <div class="section-header reveal">
+            <h2>Customer Love</h2>
+        </div>
+        <div class="reviews-container reveal">
+            <div class="review-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>“Absolutely love the collection! The fabric quality is amazing for the price. Best shop in Chickpet.”</p>
+                <h5 style="margin-top:15px;">- Priya Sharma</h5>
+            </div>
+            <div class="review-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p>“Bought Kurties for my boutique. The designs are very modern and sell out fast. Highly recommended.”</p>
+                <h5 style="margin-top:15px;">- Anjali K.</h5>
+            </div>
+            <div class="review-card">
+                <div class="stars"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i></div>
+                <p>“Great variety and very friendly staff. Will definitely visit again for festive shopping.”</p>
+                <h5 style="margin-top:15px;">- Lakshmi R.</h5>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" style="background-color: #fff;">
+        <div class="section-header reveal">
+            <h2>Get In Touch</h2>
+            <p>Visit us or contact us for inquiries.</p>
+        </div>
+        <div class="contact-wrapper reveal">
+            <div class="contact-info">
+                <h3>Contact Details</h3>
+                <p style="margin-bottom: 30px; color: #666;">We are located in the textile hub of Bangalore.</p>
+                
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-phone-alt"></i></div>
+                    <div>
+                        <h4>Phone</h4>
+                        <p><a href="tel:9008291647">+91 9008291647</a></p>
+                        <p><a href="tel:9916208160">+91 9916208160</a></p>
+                    </div>
+                </div>
+                
+                <div class="info-item">
+                    <div class="info-icon"><i class="fas fa-map-marker-alt"></i></div>
+                    <div>
+                        <h4>Address</h4>
+                        <p>207, 2nd Floor, Devatha Market,</p>
+                        <p>AM Lane, Chickpet, Bangalore</p>
+                    </div>
+                </div>
+
+                <div class="info-item">
+                    <div class="info-icon"><i class="fab fa-whatsapp"></i></div>
+                    <div>
+                        <h4>WhatsApp</h4>
+                        <p><a href="https://wa.me/919008291647" target="_blank">Chat with us</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-form">
+                <h3>Send a Message</h3>
+                <form onsubmit="event.preventDefault(); alert('Thank you! We will contact you soon.');">
+                    <div class="form-group">
+                        <input type="text" placeholder="Your Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Phone Number" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea rows="4" placeholder="Your Message or Inquiry"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Send Message</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-logo">Mataji Fashion</div>
+        <p>Celebrate Your Culture in Style.</p>
+        
+        <div class="social-links">
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="https://wa.me/919008291647"><i class="fab fa-whatsapp"></i></a>
+        </div>
+
+        <p class="copyright">© 2023 Mataji Fashion. All Rights Reserved. Designed for Excellence.</p>
+    </footer>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        // 1. Mobile Menu Toggle
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // 2. Background Slideshow Logic
+        const heroBg = document.querySelector('.hero-bg');
+        const images = [
+            'https://images.unsplash.com/photo-1610030469983-98e550d6193c?q=80&w=1920&auto=format&fit=crop', // Red Saree/Texture
+            'https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=1920&auto=format&fit=crop', // Gold Jewelry/Fabric
+            'https://images.unsplash.com/photo-1596783437088-08a38c2965ca?q=80&w=1920&auto=format&fit=crop'  // Ethnic Wear
+        ];
+        let currentImg = 0;
+
+        function changeBackground() {
+            currentImg = (currentImg + 1) % images.length;
+            heroBg.style.opacity = '0'; // Fade out
+            setTimeout(() => {
+                heroBg.style.backgroundImage = `url('${images[currentImg]}')`;
+                heroBg.style.opacity = '1'; // Fade in
+            }, 1000);
+        }
+
+        setInterval(changeBackground, 5000); // Change every 5 seconds
+
+        // 3. Scroll Reveal Animation
+        window.addEventListener('scroll', reveal);
+
+        function reveal() {
+            var reveals = document.querySelectorAll('.reveal');
+            var windowHeight = window.innerHeight;
+            var elementVisible = 150;
+
+            for (var i = 0; i < reveals.length; i++) {
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add('active');
+                }
+            }
+        }
+        // Trigger once on load
+        reveal();
+
+        // 4. Gold Dust Particle Animation (Canvas)
+        const canvas = document.getElementById("bg-canvas");
+        const ctx = canvas.getContext("2d");
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let particlesArray;
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 2;
+                this.speedX = (Math.random() * 0.5) - 0.25;
+                this.speedY = (Math.random() * 0.5) - 0.25;
+                this.color = 'rgba(212, 175, 55, ' + (Math.random() * 0.5 + 0.1) + ')'; // Gold color
+            }
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                if (this.size > 0.2) this.size -= 0.005; // Twinkle effect
+                if (this.size <= 0.2) this.size = Math.random() * 2;
+                
+                // Wrap around screen
+                if (this.x > canvas.width) this.x = 0;
+                if (this.x < 0) this.x = canvas.width;
+                if (this.y > canvas.height) this.y = 0;
+                if (this.y < 0) this.y = canvas.height;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.height * canvas.width) / 15000; // Density
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+
+        initParticles();
+        animateParticles();
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            initParticles();
+        });
+
+    </script>
+</body>
+</html>
